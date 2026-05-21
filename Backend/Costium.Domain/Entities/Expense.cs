@@ -6,7 +6,7 @@ namespace Costium.Domain.Entities;
 public class Expense : BaseEntity
 {
     public int ExpenseIdNumber{ get; private set; }
-    public string? Description { get; private set; }
+    public string Description { get; private set; }
     public Money TotalAmount { get; private set; }
     public int InstallmentCount { get; private set; }
     public ExpenseType ExpenseType { get; private set; }
@@ -15,5 +15,17 @@ public class Expense : BaseEntity
 
     private readonly List<ExpenseInstallment> _installments;
     public IReadOnlyCollection<ExpenseInstallment> Installments => _installments;
+
+    private Expense(int expenseIdNumber, string? description, Money totalAmount, int installmentCount, ExpenseType expenseType, ExpenseCategory expenseCategory, Guid expenseCategoryId, List<ExpenseInstallment> installments)
+    {
+        ExpenseIdNumber = expenseIdNumber;
+        Description = description;
+        TotalAmount = totalAmount;
+        InstallmentCount = installmentCount;
+        ExpenseType = expenseType;
+        ExpenseCategory = expenseCategory;
+        ExpenseCategoryId = expenseCategoryId;
+        _installments = installments;
+    }
 
 }

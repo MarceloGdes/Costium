@@ -1,11 +1,12 @@
 ﻿using Costium.Domain.Enums;
+using Costium.Domain.Exceptions;
 using Costium.Domain.Value_Objects;
 
 namespace Costium.Domain.Entities;
 
 public class FinancialTransaction : BaseEntity
 {
-    public ExpenseInstallment ExpenseInstallment { get; private set; }
+    public ExpenseInstallment? ExpenseInstallment { get; private set; }
     public Guid ExpenseInstallmentId { get; private set; }
     public FinancialTransactionType Type { get; private set; }
     public Money Amount { get; private set; }
@@ -18,8 +19,17 @@ public class FinancialTransaction : BaseEntity
         Amount = amount;
         TransactionDate = transactionDate;
     }
-    public static FinancialTransaction Create(Guid ExpenseInstallmentId, FinancialTransactionType type, Money amount, DateTime transactionDate)
+    public static FinancialTransaction Create(Guid expenseInstallmentId, FinancialTransactionType type, Money amount, DateTime transactionDate)
     {
-        return new FinancialTransaction(ExpenseInstallmentId, type, amount, transactionDate);
+        if(expenseInstallmentId == Guid.Empty)
+            throw new DomainException("Parcela é obrigatória.");
+
+        if(amount.Amount <= 0)
+            throw new DomainException("Valor deve ser maior que zero.");
+
+        if(transactionDate > DateTime.UtcNow)
+            throw new DomainException("Data da transação não pode ser futura.");
+
+        return new FinancialTransaction(expenseInstallmentId, type, amount, transactionDate);
     }
 }
