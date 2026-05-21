@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Costium.Api/Costium.Api.csproj" />
+  <Project Path="Costium.Application/Costium.Application.csproj" />
+  <Project Path="Costium.Domain/Costium.Domain.csproj" />
+  <Project Path="Costium.Infrastructure/Costium.Infrastructure.csproj" />
+</Solution>
