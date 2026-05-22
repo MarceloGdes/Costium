@@ -1,6 +1,6 @@
 ﻿using Costium.Domain.Enums;
 using Costium.Domain.Exceptions;
-using Costium.Domain.Value_Objects;
+using Costium.Domain.ValueObjects;
 
 namespace Costium.Domain.Entities;
 
