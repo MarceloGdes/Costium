@@ -1,24 +1,22 @@
-﻿using Costium.Domain.Exceptions;
+﻿using Costium.Domain.Enums;
+using Costium.Domain.Exceptions;
 
-namespace Costium.Domain.Value_Objects;
+namespace Costium.Domain.ValueObjects;
 
 public sealed class Money : ValueObject
 {
     public double Amount { get; private set; }
-    public string Currency { get; private set; }
+    public Currency Currency { get; private set; }
 
-    private Money(double amount, string currency) 
+    private Money(double amount, Currency currency) 
     {
         Amount = amount;
         Currency = currency;
     }
-    public static Money Create(double amount, string currency)
+    public static Money Create(double amount, Currency currency)
     {
         if (amount < 0)
             throw new DomainException("Valor não pode ser negativo.");
-    
-        if (string.IsNullOrWhiteSpace(currency) || currency.Length != 3)
-            throw new DomainException("Moeda inválida.");
 
         return new Money(amount, currency);
     }
