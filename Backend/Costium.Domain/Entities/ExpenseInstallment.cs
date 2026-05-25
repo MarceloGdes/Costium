@@ -24,7 +24,7 @@ public class ExpenseInstallment : BaseEntity
         _financialTransactions = [];
     }
 
-    public static ExpenseInstallment Create(Guid expenseId, int installmentNumber, Money amount, DateTime dueDate)
+    internal static ExpenseInstallment Create(Guid expenseId, int installmentNumber, Money amount, DateTime dueDate)
     {
         if (expenseId == Guid.Empty)
             throw new DomainException("Despesa é obrigatória.");

@@ -11,6 +11,7 @@ public class Expense : BaseEntity
     public ExpenseType ExpenseType { get; private set; }
     public ExpenseCategory? ExpenseCategory { get; private set; }
     public Guid ExpenseCategoryId { get; private set; }
+
     private readonly List<ExpenseInstallment> _installments;
     public IReadOnlyCollection<ExpenseInstallment> Installments => _installments.AsReadOnly();
     public Money TotalAmount => _installments
@@ -19,7 +20,7 @@ public class Expense : BaseEntity
         _installments.First().Amount,
         (acc, i) => acc.Add(i.Amount)
     );
-    public int InstallmentCount => _installments.Count();
+    public int InstallmentCount => _installments.Count;
     
     private Expense(int expenseIdNumber, string description, ExpenseType expenseType, Guid expenseCategoryId, List<ExpenseInstallment> installments)
     {
@@ -33,11 +34,17 @@ public class Expense : BaseEntity
     public static Expense Create(int expenseIdNumber, string description, ExpenseType expenseType, Guid expenseCategoryId, List<ExpenseInstallment> installments)
     {
         if (expenseIdNumber <= 0)
-            throw new DomainException("Número da despesa deve ser maior que zero.");
+            throw new DomainException("Número de identificação da despesa deve ser maior que zero.");
+
         if (string.IsNullOrWhiteSpace(description))
             throw new DomainException("Descrição é obrigatória.");
+
+        if (description.Length > 255)
+            throw new DomainException("Descrição deve ter até 255 caracteres.");
+
         if (expenseCategoryId == Guid.Empty)
             throw new DomainException("Categoria é obrigatória.");
+
         if (installments == null || !installments.Any())
             throw new DomainException("Pelo menos uma parcela é obrigatória.");
         return new Expense(expenseIdNumber, description, expenseType, expenseCategoryId, installments);
