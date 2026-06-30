@@ -6,10 +6,10 @@ namespace Costium.Domain.Entities;
 
 public class Expense : BaseEntity
 {
-    public int ExpenseIdNumber{ get; private set; }
+    public int Number{ get; private set; }
     public string Description { get; private set; }
     public ExpenseType ExpenseType { get; private set; }
-    public ExpenseCategory? ExpenseCategory { get; private set; }
+    public ExpenseCategory ExpenseCategory { get; private set; }
     public Guid ExpenseCategoryId { get; private set; }
 
     private readonly List<ExpenseInstallment> _installments;
@@ -22,20 +22,16 @@ public class Expense : BaseEntity
     );
     public int InstallmentCount => _installments.Count;
     
-    private Expense(int expenseIdNumber, string description, ExpenseType expenseType, Guid expenseCategoryId, List<ExpenseInstallment> installments)
+    private Expense(string description, ExpenseType expenseType, Guid expenseCategoryId, List<ExpenseInstallment> installments)
     {
-        ExpenseIdNumber = expenseIdNumber;
         Description = description;
         ExpenseType = expenseType;
         ExpenseCategoryId = expenseCategoryId;
         _installments = installments;
     }
 
-    public static Expense Create(int expenseIdNumber, string description, ExpenseType expenseType, Guid expenseCategoryId, List<ExpenseInstallment> installments)
+    public static Expense Create(string description, ExpenseType expenseType, Guid expenseCategoryId, List<ExpenseInstallment> installments)
     {
-        if (expenseIdNumber <= 0)
-            throw new DomainException("Número de identificação da despesa deve ser maior que zero.");
-
         if (string.IsNullOrWhiteSpace(description))
             throw new DomainException("Descrição é obrigatória.");
 
@@ -47,7 +43,7 @@ public class Expense : BaseEntity
 
         if (installments == null || !installments.Any())
             throw new DomainException("Pelo menos uma parcela é obrigatória.");
-        return new Expense(expenseIdNumber, description, expenseType, expenseCategoryId, installments);
+        return new Expense(description, expenseType, expenseCategoryId, installments);
     }
 
 }
