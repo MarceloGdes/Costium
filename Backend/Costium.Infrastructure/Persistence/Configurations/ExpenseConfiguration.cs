@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Costium.Infrastructure.Persistence.Configurations;
 
-public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
+public class ExpenseConfiguration : BaseEntityConfiguration<Expense>
 {
-    public void Configure(EntityTypeBuilder<Expense> builder)
+    public override void Configure(EntityTypeBuilder<Expense> builder)
     {
+        builder.ToTable("Expenses");
+
         builder.HasKey(e => e.Id);
 
         //Preenche automaticamente o campo Number com o próximo valor da sequência configurada

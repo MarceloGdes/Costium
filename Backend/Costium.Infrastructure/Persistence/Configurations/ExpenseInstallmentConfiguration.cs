@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Costium.Infrastructure.Persistence.Configurations;
 
-public class ExpenseInstallmentConfiguration : IEntityTypeConfiguration<ExpenseInstallment>
+public class ExpenseInstallmentConfiguration : BaseEntityConfiguration<ExpenseInstallment>
 {
-    public void Configure(EntityTypeBuilder<ExpenseInstallment> builder)
+    public override void Configure(EntityTypeBuilder<ExpenseInstallment> builder)
     {
+        builder.ToTable("ExpenseInstallments");
+
         builder.HasKey(e => e.Id);
 
         builder.Property(e => e.InstallmentNumber)
@@ -18,18 +20,7 @@ public class ExpenseInstallmentConfiguration : IEntityTypeConfiguration<ExpenseI
             .HasConversion<string>()
             .IsRequired();
 
-        builder.OwnsOne(e => e.Amount, money =>
-        {
-            money.Property(m => m.Amount)
-                .HasColumnName("Amount")
-                .HasColumnType("decimal(18,2)")
-                .IsRequired();
-
-            money.Property(m => m.Currency)
-                .HasColumnName("Currency")
-                .HasMaxLength(3)
-                .IsRequired();
-        });
+        builder.OwnsMoney(e => e.Amount);
 
         builder.Property(e => e.DueDate)
             .IsRequired();

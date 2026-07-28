@@ -5,15 +5,15 @@ namespace Costium.Domain.ValueObjects;
 
 public sealed class Money : ValueObject
 {
-    public double Amount { get; private set; }
+    public decimal Amount { get; private set; }
     public Currency Currency { get; private set; }
 
-    private Money(double amount, Currency currency) 
+    private Money(decimal amount, Currency currency) 
     {
         Amount = amount;
         Currency = currency;
     }
-    public static Money Create(double amount, Currency currency)
+    public static Money Create(decimal amount, Currency currency)
     {
         if (amount < 0)
             throw new DomainException("Valor não pode ser negativo.");
