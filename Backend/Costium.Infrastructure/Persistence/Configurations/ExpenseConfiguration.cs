@@ -27,8 +27,9 @@ public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
             .HasForeignKey(e => e.ExpenseCategoryId)
             .IsRequired();
 
-        builder
-
-
+        builder.HasMany(e => e.Installments)
+            .WithOne()
+            .HasForeignKey(i => i.ExpenseId)
+            .IsRequired();
     }
 }
